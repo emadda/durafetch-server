@@ -1,0 +1,28 @@
+{
+    "name": "durafetch-server",
+    "version": "1.0.0",
+    "main": "index.ts",
+    "scripts": {},
+    "description": "Download *all* data stored in Cloudflare Durable Objects to a SQLite database.",
+    "keywords": [
+        "Cloudflare",
+        "Durable Object",
+        "Cloudflare Durable Object",
+        "Cloudflare Workers",
+        "durafetch"
+    ],
+    "homepage": "https://durafetch.com",
+    "author": "Enzo",
+    "license": "SEE LICENSE IN LICENSE",
+    "dependencies": {
+        "lodash": "^4.17.21"
+    },
+    "devDependencies": {
+        "@cloudflare/workers-types": "^4.20230518.0",
+        "typescript": "^5.0.4"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/emadda/durafetch-server.git"
+    }
+}

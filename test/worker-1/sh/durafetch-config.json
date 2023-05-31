@@ -1,0 +1,16 @@
+{
+    "db_file": "./del/db.sqlite",
+    "servers": [
+        {
+            "ws_url": "ws://durafetch_worker-1.localhost:8720",
+            "auth_token": "secret_http_auth_bearer_token_replace_this_with_more_than_40_chars"
+        }
+    ],
+    "concurrent_downloads": 50,
+    "poll": {
+        "every_ms": 1000
+    },
+    "logging": {
+        "ndjson": false
+    }
+}

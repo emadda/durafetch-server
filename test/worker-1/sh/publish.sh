@@ -1,0 +1,2 @@
+wrangler publish
+# wrangler delete

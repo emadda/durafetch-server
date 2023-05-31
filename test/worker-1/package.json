@@ -1,0 +1,12 @@
+{
+    "name": "worker-1",
+    "version": "1.0.0",
+    "description": "Minimal Durafetch example Cloudflare worker",
+    "main": "index.js",
+    "dependencies": {
+        "durafetch-server": "file:../.."
+    },
+    "scripts": {},
+    "author": "",
+    "license": "NOLICENSE"
+}
