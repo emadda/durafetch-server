@@ -213,6 +213,14 @@ const wrap_durable_object = (ins) => {
     const storage = ins.state.storage;
 
 
+    // Throttle notifications in case of rapid writes.
+    // Is called with last args, invoked on leading and trailing edge by default.
+    // @see https://developers.cloudflare.com/workers/runtime-apis/durable-objects/#durable-object-lifespan
+    // - "Durable Objects will wait until all async IO is complete including promises".
+    // Note: `_.throttle` must be wrapped per durable object instance so the rate limit state is per durable object instance (not shared globally for all durable object instances).
+    // @todo/low retry on fail
+    const send_event_internal_do_new_cur_write_id_throttled = _.throttle(send_event_internal_do_new_cur_write_id, config.max_write_notifications_per_do_in_ms);
+
     const wrap_write_fn = (fn_str) => {
         const orig_fn = storage[fn_str];
 
@@ -223,9 +231,16 @@ const wrap_durable_object = (ins) => {
             if (_.isString(args[0]) && ["put", "delete"].includes(fn_str)) {
                 keys = [args[0]];
             }
+
             if (_.isObject(args[0]) && fn_str === "put") {
                 keys = _.keys(args[0]);
             }
+
+            // Multi delete.
+            if (_.isArray(args[0]) && fn_str === "delete") {
+                keys = [...args[0]];
+            }
+
             if (keys.length === 0 || !init_ran) {
                 throw Error("Could not read keys from write fn args, or next_write_id not initialised.");
             }
@@ -249,7 +264,7 @@ const wrap_durable_object = (ins) => {
             const write = orig_fn.apply(storage, args);
             storage.put(get_key_for_write_id(write_id), {keys});
             increment_write_id();
-            send_event_internal_do_new_cur_write_id_throttled_1s(ins, get_cur_write_id());
+            send_event_internal_do_new_cur_write_id_throttled(ins, get_cur_write_id());
             return write;
         }
     };
@@ -422,11 +437,6 @@ const send_event_internal_do_new_cur_write_id = async (ins, cur_write_id) => {
     );
     return o.fetch(req);
 };
-
-// Throttle notifications in case of rapid writes.
-// Is called with last args, invoked on leading and trailing edge by default.
-const send_event_internal_do_new_cur_write_id_throttled_1s = _.throttle(send_event_internal_do_new_cur_write_id, 1000);
-
 
 const send_event_internal_do_started = async (env, x) => {
     const o = await get_durafetch_do(env);

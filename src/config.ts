@@ -8,7 +8,11 @@ const default_config = {
     // Use upto 64MB RAM.
     number_of_key_values_in_each_do_download_ws_message: (ram_per_do_kb / 2) / max_val_size_kb,
     worker_name: null,
-    log_level: "error"
+    log_level: "error",
+
+    // When writes occur in a DO they send an HTTP request to DURAFETCH_DO to notify it of a new write_id.
+    // - Rate limit those notifications to one notification per x ms.
+    max_write_notifications_per_do_in_ms: 100
 }
 
 const config = {

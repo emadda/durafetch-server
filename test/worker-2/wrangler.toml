@@ -1,0 +1,31 @@
+name = "worker-2"
+main = "src/index.ts"
+compatibility_date = "2023-05-29"
+
+
+# Overridden by .dev.vars file.
+vars = { DURAFETCH_ENV = "prod", DURAFETCH_AUTH = "secret_http_auth_bearer_token_replace_this_with_more_than_40_chars" }
+
+# Must also add CNAME * anything.example.com to Cloudflare DNS.
+routes = [
+    # TLS only works for first level subdomains (Total TLS = $10/month extra).
+    # Most specific match take priority
+    # @see https://developers.cloudflare.com/workers/platform/triggers/routes/#matching-behavior
+    { pattern = "durafetch_worker-1.your-domain.com/*", zone_name = "your-domain.com" },
+    { pattern = "your-app.your-domain.com/*", zone_name = "your-domain.com" }
+]
+
+
+[durable_objects]
+bindings = [
+    { name = "DURABLE_OBJECT_A", class_name = "DURABLE_OBJECT_A" },
+    { name = "DURAFETCH_DO", class_name = "DURAFETCH_DO" }
+]
+
+
+# @see https://developers.cloudflare.com/workers/learning/using-durable-objects/#durable-object-migrations-in-wranglertoml
+[[migrations]]
+tag = "v1" # Should be unique for each entry
+new_classes = ["DURABLE_OBJECT_A", "DURAFETCH_DO"] # Array of new classes
+
+

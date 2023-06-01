@@ -83,8 +83,18 @@ class DURAFETCH_DO {
                 if (url.pathname === "/external/do/read_all_from") {
                     return this.process_external_do_read_all_from(req);
                 }
+            }
 
 
+            if (req.method === "POST") {
+                // Delete the list of durable objects (but not the objects themselves).
+                // - Used for testing.
+                if (url.pathname === "/external/do/delete_all") {
+                    await this.state.storage.deleteAll();
+                    const all = [...(await this.state.storage.list())];
+                    console.log("Deleted all keys in DURAFETCH_DO", JSON.stringify(all));
+                    return json_res({ok: true});
+                }
             }
 
 
@@ -209,7 +219,6 @@ class DURAFETCH_DO {
 
         v.cur_write_id = body.cur_write_id;
         this.state.storage.put(key, v);
-
         // @todo/high Send partial_index of durable object listing to all ws listening on `this.ws_get_and_watch_durable_object_index`.
 
         return json_res({ok: true});

@@ -19,12 +19,13 @@ It consists of two npm packages:
 		- Writes them to a local SQLite database.
 
 	- Usage:
-		- `npm install durafetch`
-		- `durafetch --config-file ./local/config.json`
+		- `npm install --global durafetch`
+		- `durafetch --config-file config.json`
 
 # Why use Durafetch?
 
-## A. As an admin UI
+
+**As an admin UI**
 
 Durable Objects do not have an admin UI or any other method of observing their state
 other than the provided JS API's.
@@ -33,11 +34,13 @@ This makes development difficult as you cannot see what is stored in your Durabl
 
 Durafetch gives you a SQL interface to see what the state of your system is so you can observe it during development and in production.
 
-## B. For queries.
+**For queries.**
 
 Durable Objects are distributed by their nature, but it is often useful to create a central database of the state so you can query it as a single datastore. SQLite gives you a SQL query engine with JSON functions.
 
-## C. For backup and restoring.
+
+
+**For backup and restoring.**
 
 There is no method to extract data from Durable Objects - Durafetch lets you do this.
 
@@ -56,6 +59,7 @@ Presently there is no method for restoring - this may be added later.
 - 3 . Add `DURAFETCH_DO` to [wrangler.toml](test/worker-1/wrangler.toml), along with subdomain routes, `DURAFETCH_AUTH` env.
 - 4 . Add [`wrap_worker_env()`](test/worker-1/src/index.ts) to worker fetch, along with external Durafetch API handler.
 - 5 . Add [`wrap_durable_object(this)`](test/worker-1/src/durable_object_a.ts) to any Durable Objects you want to download the data from.
+- 6 . Add `127.0.0.1   durafetch_{worker_name}.localhost` to `/etc/hosts` so that `ws://durafetch_{worker_name}.localhost:1234` connects to `workerd` locally during development.
 
 ### Setting up subdomain routing.
 

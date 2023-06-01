@@ -1,0 +1,1 @@
+Shows a minimal example of adding `durafetch-server` to a Cloudflare Worker.

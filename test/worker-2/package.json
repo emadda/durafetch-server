@@ -1,0 +1,12 @@
+{
+    "name": "worker-2",
+    "version": "1.0.0",
+    "description": "Server handler for tests.",
+    "main": "index.js",
+    "dependencies": {
+        "durafetch-server": "file:../.."
+    },
+    "scripts": {},
+    "author": "",
+    "license": "NOLICENSE"
+}
