@@ -138,6 +138,7 @@ Please create an issue if you encounter any problems.
 	- [ ] Detect writes to the SQLite database, write them back to the remote object.
 	- [ ] Optionally keep a SQLite write audit history to make deletes visible and allow syncing to other systems.
 	- [ ] Export/restore CLI.
+	- [ ] Convert polling to bidrectional WebSocket when receiving the current list of Durable Objects.
 
 - Server
 	- [ ] Compress/Garbage collect the "changed keys" history stored in each Durable Object.
