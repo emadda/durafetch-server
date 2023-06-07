@@ -70,6 +70,9 @@ The Durafetch external API is reachable from a subdomain: `durafetch_{your_worke
 Add this to your wrangler.toml:
 
 ```
+# Note: "wrangler dev" in version 3+ rewrites localhost URLs to match the zone_name when running locally.
+# - This breaks subdomain routing as it replaces "http://durafetch_{your_worker_name}.localhost:1234" with "http://your-domain.com".
+# - A temp fix is to add these routes using the CF web UI and remove them from your wrangler.toml file.
 routes = [
     { pattern = "*.your-domain.com/*", zone_name = "your-domain.com" }
 ]
