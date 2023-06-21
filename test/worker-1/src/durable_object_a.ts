@@ -24,7 +24,7 @@ class DURABLE_OBJECT_A {
 
         // Intercepts calls to `storage.*`
         // - Records the keys written to and stores them in the same write transaction, increments write_id.
-        wrap_durable_object(this);
+        wrap_durable_object(this, {class_name: DURABLE_OBJECT_A.name});
     }
 
     // Your application code here.

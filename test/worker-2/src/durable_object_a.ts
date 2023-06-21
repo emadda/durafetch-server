@@ -16,7 +16,7 @@ class DURABLE_OBJECT_A {
     constructor(state: DurableObjectState, env: Env) {
         this.state = state;
         this.env = env;
-        wrap_durable_object(this);
+        wrap_durable_object(this, {class_name: DURABLE_OBJECT_A.name});
     }
 
 

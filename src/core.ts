@@ -190,7 +190,18 @@ const get_meta_key = () => `${key_prefix}.meta`
 // Usage:
 // - Set `this.storage` from the constructor arg[0].
 // - Call in durable object class constructor, pass `this`.
-const wrap_durable_object = (ins) => {
+const wrap_durable_object = (ins, opts = {}) => {
+    const ok = (
+        ("class_name" in opts) &&
+        _.isString(opts.class_name) &&
+        opts.class_name.length > 0
+    );
+
+    if (!ok) {
+        // Note: `ins.constructor.name` is empty after when using wrangler v3+.
+        throw Error("Must set `class_name` via wrap_durable_object arg");
+    }
+
 
     const orig_fn_fetch = ins.fetch;
     const orig_fetch = (...args) => {
@@ -404,7 +415,7 @@ const wrap_durable_object = (ins) => {
     const get_full_meta = (meta) => {
         return {
             worker_name: get_worker_name(),
-            class_name: ins.constructor.name,
+            class_name: opts.class_name,
             name: meta.name,
 
             id: meta.id,
